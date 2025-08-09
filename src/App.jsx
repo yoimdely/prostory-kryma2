@@ -92,38 +92,75 @@ export default function App() {
     <div className="min-h-screen" style={{backgroundColor:'#FFF8F2', color:'#1F1B16', fontFamily:'Montserrat, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial'}}>
 
       {/* NAV */}
-      <header className="sticky top-0 z-30 backdrop-blur border-b" style={{backgroundColor:'rgba(255,248,242,0.8)', borderColor:'#EAD6C4'}}>
-        <div className="max-w-6xl mx-auto px-5 md:px-6 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-2xl grid place-items-center font-semibold" style={{backgroundColor:'#2B2118', color:'#F6E6D9'}}>ПК</div>
-            <div>
-              <div className="font-extrabold flex items-center gap-2" style={{fontFamily:'Prata, serif'}}>
-                <Home size={18} /> Просторы Крыма
-              </div>
-              <div className="text-xs" style={{color:'#7A6A5F'}}><MapPin size={12} className="inline mr-1"/> Жилой квартал у моря · Приморский, Феодосия</div>
-            </div>
-          </div>
-          <nav className="hidden md:flex items-center gap-5 text-[13px] overflow-x-auto whitespace-nowrap max-w-[55vw]">
-            {[
-              ["О проекте","#about"],
-              ["Галерея","#gallery"],
-              ["Локация","#location"],
-              ["Инфраструктура","#infra"],
-              ["Технологии","#tech"],
-              ["Планировки","#plans"],
-              ["Очереди","#phasing"],
-              ["Как купить","#process"],
-              ["Доверие","#trust"],
-            ].map(([t,href])=> (
-              <a key={href} href={href} className="hover:underline" style={{color:'#4B3B30'}}>{t}</a>
-            ))}
-          </nav>
-          <div className="flex items-center gap-3">
-            <a href="https://t.me/todayididg00d" target="_blank" className="hidden sm:inline-block px-4 py-2 rounded-2xl border" style={{borderColor:'#D4A373', color:'#2B2118'}}>Заявка в Telegram</a>
-            <a href="#cta" className="px-4 py-2 rounded-2xl" style={{backgroundColor:'#C65D3A', color:'#FFF8F2'}}>Подобрать квартиру</a>
-          </div>
+<header className="sticky top-0 z-30 border-b backdrop-blur"
+        style={{backgroundColor:"rgba(255,248,242,0.85)", borderColor:"#EAD6C4"}}>
+  <div className="max-w-6xl mx-auto px-5 md:px-6 py-3 flex items-center gap-4">
+    {/* ЛЕВАЯ ЧАСТЬ: лого + текст */}
+    <a href="#" className="flex items-center gap-3 shrink-0">
+      <div className="w-9 h-9 rounded-2xl grid place-items-center font-semibold"
+           style={{backgroundColor:"#2B2118", color:"#F6E6D9"}}>ПК</div>
+      <div className="leading-tight">
+        <div className="font-extrabold flex items-center gap-2"
+             style={{fontFamily:"Prata, serif", fontSize:18, lineHeight:1}}>
+          <Home size={18}/> Просторы Крыма
         </div>
-      </header>
+        <div className="text-[11px]" style={{color:"#7A6A5F"}}>
+          <MapPin size={12} className="inline mr-1"/> Жилой квартал у моря · Приморский
+        </div>
+      </div>
+    </a>
+
+    {/* БУРГЕР (мобилка) */}
+    <button onClick={()=>setMenuOpen(v=>!v)}
+            className="lg:hidden ml-auto rounded-xl border px-3 py-2"
+            style={{borderColor:"#EAD6C4", color:"#2B2118"}}>
+      {menuOpen ? <X size={18}/> : <Menu size={18}/>}
+    </button>
+
+    {/* МЕНЮ ДЕСКТОП — короткий список */}
+    <nav className="hidden lg:flex items-center gap-6 text-[13px] mx-auto">
+      {[
+        ["О проекте","#about"],
+        ["Локация","#location"],
+        ["Планировки","#plans"],
+        ["Галерея","#gallery"],
+        ["Как купить","#process"],
+      ].map(([t,href])=>(
+        <a key={href} href={href} className="hover:underline"
+           style={{color:"#4B3B30"}}>{t}</a>
+      ))}
+    </nav>
+
+    {/* ПРАВАЯ ЧАСТЬ: кнопки */}
+    <div className="ml-auto hidden sm:flex items-center gap-3">
+      <a href="https://t.me/todayididg00d" target="_blank"
+         className="px-4 py-2 rounded-2xl border hover:shadow-soft"
+         style={{borderColor:"#D4A373", color:"#2B2118"}}>Заявка в Telegram</a>
+      <a href="#cta" className="px-4 py-2 rounded-2xl hover:shadow-soft"
+         style={{backgroundColor:"#C65D3A", color:"#FFF8F2"}}>Подобрать квартиру</a>
+    </div>
+  </div>
+
+  {/* МЕНЮ МОБИЛЬНОЕ */}
+  <div className={`lg:hidden overflow-hidden border-t transition-[max-height] duration-300`}
+       style={{maxHeight: menuOpen ? 360 : 0, borderColor:"#EAD6C4"}}>
+    <div className="px-5 py-3 grid grid-cols-2 gap-3 text-sm">
+      {[
+        ["О проекте","#about"],
+        ["Локация","#location"],
+        ["Планировки","#plans"],
+        ["Галерея","#gallery"],
+        ["Как купить","#process"],
+        ["Оставить заявку","#cta"],
+      ].map(([t,href])=>(
+        <a key={href} href={href}
+           className="px-3 py-2 rounded-xl border text-center"
+           style={{borderColor:"#EAD6C4", color:"#2B2118", background:"#FFFFFF"}}>{t}</a>
+      ))}
+    </div>
+  </div>
+</header>
+
 
      {/* HERO */}
 <section className="relative overflow-hidden">
