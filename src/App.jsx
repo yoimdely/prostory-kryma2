@@ -50,7 +50,7 @@ function injectFonts() {
   if (typeof document === "undefined") return;
   const link = document.createElement("link");
   link.rel = "stylesheet";
-  link.href = "https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=Playfair+Display:wght@600;800&display=swap";
+  link.href = "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Prata&display=swap";
   document.head.appendChild(link);
 }
 
@@ -89,7 +89,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen" style={{backgroundColor:'#FFF8F2', color:'#1F1B16', fontFamily:'Manrope, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial'}}>
+    <div className="min-h-screen" style={{backgroundColor:'#FFF8F2', color:'#1F1B16', fontFamily:'Montserrat, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial'}}
 
       {/* NAV */}
       <header className="sticky top-0 z-30 backdrop-blur border-b" style={{backgroundColor:'rgba(255,248,242,0.8)', borderColor:'#EAD6C4'}}>
@@ -97,7 +97,7 @@ export default function App() {
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-2xl grid place-items-center font-semibold" style={{backgroundColor:'#2B2118', color:'#F6E6D9'}}>ПК</div>
             <div>
-              <div className="font-extrabold flex items-center gap-2" style={{fontFamily:'Playfair Display, Manrope, serif'}}>
+              <div className="font-extrabold flex items-center gap-2" style={{fontFamily:'Prata, serif'}}>
                 <Home size={18} /> Просторы Крыма
               </div>
               <div className="text-xs" style={{color:'#7A6A5F'}}><MapPin size={12} className="inline mr-1"/> Жилой квартал у моря · Приморский, Феодосия</div>
@@ -131,7 +131,7 @@ export default function App() {
   <div className="relative max-w-6xl mx-auto px-4 py-16 md:py-24 grid md:grid-cols-2 gap-10">
     <motion.div initial={{opacity:0, y:20}} animate={{opacity:1, y:0}} transition={{duration:0.5}}>
       <h1 className="text-[40px] md:text-[56px] leading-[1.1] font-extrabold"
-          style={{fontFamily:'Playfair Display, Manrope, serif', color:'#2B2118'}}>
+          style={{fontFamily:'Prata, serif', color:'#2B2118'}}>
         Новый город у моря — «Просторы Крыма»
       </h1>
       <p className="mt-5 text-base md:text-lg" style={{color:'#4B3B30', maxWidth:640}}>
@@ -203,7 +203,7 @@ export default function App() {
       <section id="about" className="py-14 md:py-20">
         <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-3 gap-10">
           <div className="md:col-span-2">
-            <h2 className="text-2xl md:text-3xl font-bold" style={{fontFamily:'Playfair Display, Manrope, serif'}}>О проекте</h2>
+            <h2 className="text-2xl md:text-3xl font-bold" style={{fontFamily:'Prata, serif'}}>О проекте</h2>
             <p className="mt-4" style={{color:'#4B3B30'}}>
               «Просторы Крыма» — современная квартальная застройка у моря: безопасные дворы без машин, детские и спортивные
               площадки, озеленение и коммерция шаговой доступности. Продуманные планировки и виды на Чёрное море.
@@ -241,7 +241,7 @@ export default function App() {
       {/* GALLERY */}
       <section id="gallery" className="py-14 md:py-20" style={{backgroundColor:'#FFF3EA'}}>
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2" style={{fontFamily:'Playfair Display, Manrope, serif'}}><Building2 size={22}/> Галерея</h2>
+          <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2" style={{fontFamily:'Prata, serif'}}><Building2 size={22}/> Галерея</h2>
           <div className="mt-6 grid md:grid-cols-3 gap-4">
             {[
               "https://images.unsplash.com/photo-1487956382158-bb926046304a?q=80&w=1600&auto=format&fit=crop",
@@ -260,7 +260,7 @@ export default function App() {
       <section id="location" className="py-14 md:py-20">
         <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-8 items-start">
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2" style={{fontFamily:'Playfair Display, Manrope, serif'}}><MapPin size={22}/> Локация и окружение</h2>
+            <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2" style={{fontFamily:'Prata, serif'}}><MapPin size={22}/> Локация и окружение</h2>
             <p className="mt-4" style={{color:'#4B3B30'}}>
               Посёлок Приморский, г.о. Феодосия, Республика Крым. Координаты: 45.138389, 35.509972.
               До пляжа ≈ 1,4 км. Рядом — аллея, спортплощадки, торговые галереи, школы, сады, медцентр.
@@ -282,7 +282,7 @@ export default function App() {
       {/* INFRA */}
       <section id="infra" className="py-14 md:py-20">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2" style={{fontFamily:'Playfair Display, Manrope, serif'}}><Store size={22}/> Инфраструктура квартала</h2>
+          <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2" style={{fontFamily:'Prata, serif'}}><Store size={22}/> Инфраструктура квартала</h2>
           <div className="grid md:grid-cols-3 gap-6 mt-6">
             {[
               {t:"Для семей", points:[[Baby,"Детские сады на территории"],[School,"Современные школы"],[Trees,"Дворы без машин"]]},
@@ -306,7 +306,7 @@ export default function App() {
       <section id="tech" className="py-14 md:py-20" style={{backgroundColor:'#FFF3EA'}}>
         <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-8 items-start">
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2" style={{fontFamily:'Playfair Display, Manrope, serif'}}><CircuitBoard size={22}/> Технологии и инженерия</h2>
+            <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2" style={{fontFamily:'Prata, serif'}}><CircuitBoard size={22}/> Технологии и инженерия</h2>
             <ul className="mt-4 space-y-2" style={{color:'#4B3B30'}}>
               {[
                 {t:'Конструктив: монолит-кирпич', icon:<Building2 size={16}/>},
@@ -333,7 +333,7 @@ export default function App() {
       {/* PLANS */}
       <section id="plans" className="py-14 md:py-20">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2" style={{fontFamily:'Playfair Display, Manrope, serif'}}><Ruler size={22}/> Планировки и метражи</h2>
+          <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2" style={{fontFamily:'Prata, serif'}}><Ruler size={22}/> Планировки и метражи</h2>
           <p className="mt-3" style={{color:'#4B3B30'}}>Студии от ~29 м², 1-комнатные ~35–45 м², 2-комнатные от ~50 м², 3-комнатные — до ~84 м². Варианты: предчистовая и с ремонтом (по корпусам и очередям).</p>
           <div className="mt-6 grid md:grid-cols-3 gap-4">
             {[
@@ -357,7 +357,7 @@ export default function App() {
       {/* PHASING */}
       <section id="phasing" className="py-14 md:py-20" style={{backgroundColor:'#FFF3EA'}}>
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2" style={{fontFamily:'Playfair Display, Manrope, serif'}}><Building2 size={22}/> Очереди строительства</h2>
+          <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2" style={{fontFamily:'Prata, serif'}}><Building2 size={22}/> Очереди строительства</h2>
           <div className="mt-6 overflow-x-auto rounded-2xl border" style={{backgroundColor:'#FFFFFF', borderColor:'#EAD6C4'}}>
             <table className="min-w-full text-sm">
               <thead style={{backgroundColor:'#F6E6D9', color:'#2B2118'}}>
@@ -389,7 +389,7 @@ export default function App() {
       {/* PROCESS */}
       <section id="process" className="py-14 md:py-20">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2" style={{fontFamily:'Playfair Display, Manrope, serif'}}><FileSignature size={22}/> Как проходит покупка</h2>
+          <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2" style={{fontFamily:'Prata, serif'}}><FileSignature size={22}/> Как проходит покупка</h2>
           <div className="mt-6 grid md:grid-cols-4 gap-4">
             {[
               {t:"Заявка", d:"Присылаем подборку планировок и цен", icon:<Handshake size={18}/>},
@@ -430,7 +430,7 @@ export default function App() {
       {/* TRUST */}
       <section id="trust" className="py-14 md:py-20" style={{backgroundColor:'#FFF3EA'}}>
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2" style={{fontFamily:'Playfair Display, Manrope, serif'}}><ShieldCheck size={22}/> Почему нам доверяют</h2>
+          <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2" style={{fontFamily:'Prata, serif'}}><ShieldCheck size={22}/> Почему нам доверяют</h2>
           <div className="mt-6 grid md:grid-cols-3 gap-4">
             {[
               {t:"Прозрачность", d:"214-ФЗ, договор ДДУ, эскроу-счёт", icon:<ShieldCheck size={18}/>},
@@ -453,7 +453,7 @@ export default function App() {
       <section id="buy" className="py-20">
         <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-10 items-start">
           <div className="space-y-4">
-            <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2" style={{fontFamily:'Playfair Display, Manrope, serif'}}><Handshake size={22}/> Оставьте заявку на подбор</h2>
+            <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2" style={{fontFamily:'Prata, serif'}}><Handshake size={22}/> Оставьте заявку на подбор</h2>
             <p style={{color:'#4B3B30'}}>Подберём планировки и условия под вашу задачу — проживание, аренда, инвестиция. Расскажем о доступных корпусах и сроках.</p>
             <a href="https://t.me/todayididg00d" target="_blank" className="inline-block px-5 py-3 rounded-2xl border" style={{borderColor:'#D4A373', color:'#2B2118'}}>Написать в Telegram</a>
           </div>
