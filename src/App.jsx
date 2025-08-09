@@ -1,165 +1,109 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import {
-  Home,
-  Building2,
-  CircuitBoard,
-  Bath,
-  ParkingSquare,
-  ShieldCheck,
-  MapPin,
-  HeartHandshake,
-  School,
-  Baby,
-  Store,
-  Dumbbell,
-  Bike,
-  Trees,
-  Ruler,
-  Hammer,
-  FileText,
-  Handshake,
-  KeyRound,
-  Banknote,
-  FileSignature,
-  Waves
-} from "lucide-react";
+import { Home, MapPin, Menu, X } from "lucide-react";
 
 // === SEO + ШРИФТЫ ===
 function injectSEO() {
   if (typeof document === "undefined") return;
-  document.title = "Просторы Крыма — жилой квартал у моря в Приморском (Феодосия)";
-  const ensure = (name, content) => {
-    let el = document.querySelector(`meta[name="${name}"]`);
-    if (!el) { el = document.createElement("meta"); el.setAttribute("name", name); document.head.appendChild(el); }
-    el.setAttribute("content", content);
-  };
-  ensure("description", "ЖК Просторы Крыма в пгт Приморский (Феодосия): 1,4 км до моря, монолит-кирпич, 6–10 этажей, предчистовая или с ремонтом, эскроу 214-ФЗ. Планировки, цены, очереди.");
-
-  const setOG = (p, c) => {
-    let el = document.querySelector(`meta[property="${p}"]`);
-    if (!el) { el = document.createElement("meta"); el.setAttribute("property", p); document.head.appendChild(el); }
-    el.setAttribute("content", c);
-  };
-  setOG("og:title", "Просторы Крыма — жилой квартал у моря");
-  setOG("og:description", "1,4 км до моря, монолит-кирпич, предчистовая/с ремонтом. Планировки, цены, очереди.");
-  setOG("og:type", "website");
-  setOG("og:image", "https://images.unsplash.com/photo-1529429612776-e5dd24d49b42?q=80&w=1600&auto=format&fit=crop");
+  document.title = "Просторы Крыма — жилой квартал у моря";
+  const meta = [
+    { name: "description", content: "ЖК Просторы Крыма в пгт Приморский (Феодосия): 1,4 км до моря, монолит-кирпич, 6–10 этажей, предчистовая или с ремонтом, эскроу 214-ФЗ." },
+    { property: "og:title", content: "Просторы Крыма — жилой квартал у моря" },
+    { property: "og:description", content: "1,4 км до моря, монолит-кирпич, предчистовая или с ремонтом. Планировки, цены, очереди." },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: "https://images.unsplash.com/photo-1529429612776-e5dd24d49b42?q=80&w=1600&auto=format&fit=crop" }
+  ];
+  meta.forEach(m => {
+    let el = document.querySelector(`meta[${m.name ? "name" : "property"}="${m.name || m.property}"]`);
+    if (!el) { el = document.createElement("meta"); m.name ? el.setAttribute("name", m.name) : el.setAttribute("property", m.property); document.head.appendChild(el); }
+    el.setAttribute("content", m.content);
+  });
 }
+
 function injectFonts() {
   if (typeof document === "undefined") return;
   const link = document.createElement("link");
   link.rel = "stylesheet";
-  link.href = "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Prata&display=swap";
+  link.href = "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Prata&display=swap";
   document.head.appendChild(link);
-}
-
-// === УТИЛЫ ===
-const IconWrap = ({ children }) => (
-  <span className="inline-flex items-center justify-center rounded-xl" style={{backgroundColor:'#F6E6D9', color:'#2B2118', width:40, height:40, border:'1px solid #EAD6C4'}}>
-    {children}
-  </span>
-);
-function Stat({ label, value, sub, icon }) {
-  return (
-    <div className="p-5 rounded-2xl border shadow-sm flex items-start gap-3" style={{backgroundColor:'#F6E6D9', borderColor:'#EAD6C4'}}>
-      {icon ? <IconWrap>{icon}</IconWrap> : null}
-      <div>
-        <div className="text-2xl font-extrabold" style={{color:'#2B2118'}}>{value}</div>
-        <div className="text-sm mt-1" style={{color:'#4B3B30'}}>{label}</div>
-        {sub ? <div className="text-xs mt-1" style={{color:'#7A6A5F'}}>{sub}</div> : null}
-      </div>
-    </div>
-  );
 }
 
 // === APP ===
 export default function App() {
+  const [menuOpen, setMenuOpen] = useState(false);
   const [sent, setSent] = useState(false);
 
   useEffect(() => { injectFonts(); injectSEO(); }, []);
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    const data = new FormData(e.target);
-    fetch("https://api.web3forms.com/submit", { method: "POST", body: data })
-      .then((r) => (r.ok ? r.json() : Promise.reject()))
-      .then(() => setSent(true))
-      .catch(() => alert("Не удалось отправить. Проверьте access_key веб-формы."));
-  };
-
   return (
-    <div className="min-h-screen" style={{backgroundColor:'#FFF8F2', color:'#1F1B16', fontFamily:'Montserrat, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial'}}>
+    <div className="min-h-screen" style={{ backgroundColor: "#FFF8F2", color: "#1F1B16", fontFamily: "Montserrat, sans-serif" }}>
 
-      {/* NAV */}
-<header className="sticky top-0 z-30 border-b backdrop-blur"
-        style={{backgroundColor:"rgba(255,248,242,0.85)", borderColor:"#EAD6C4"}}>
-  <div className="max-w-6xl mx-auto px-5 md:px-6 py-3 flex items-center gap-4">
-    {/* ЛЕВАЯ ЧАСТЬ: лого + текст */}
-    <a href="#" className="flex items-center gap-3 shrink-0">
-      <div className="w-9 h-9 rounded-2xl grid place-items-center font-semibold"
-           style={{backgroundColor:"#2B2118", color:"#F6E6D9"}}>ПК</div>
-      <div className="leading-tight">
-        <div className="font-extrabold flex items-center gap-2"
-             style={{fontFamily:"Prata, serif", fontSize:18, lineHeight:1}}>
-          <Home size={18}/> Просторы Крыма
+      {/* NAVIGATION */}
+      <header className="sticky top-0 z-30 border-b backdrop-blur"
+        style={{ backgroundColor: "rgba(255,248,242,0.95)", borderColor: "#EAD6C4" }}>
+        <div className="max-w-6xl mx-auto px-5 py-3 flex items-center gap-4">
+
+          {/* Лого и название */}
+          <a href="#" className="flex items-center gap-3 shrink-0">
+            <div className="w-9 h-9 rounded-2xl grid place-items-center font-semibold"
+              style={{ backgroundColor: "#2B2118", color: "#F6E6D9" }}>ПК</div>
+            <div className="leading-tight">
+              <div className="font-extrabold flex items-center gap-2"
+                style={{ fontFamily: "Prata, serif", fontSize: 18 }}>
+                <Home size={18} /> Просторы Крыма
+              </div>
+              <div className="text-[11px]" style={{ color: "#7A6A5F" }}>
+                <MapPin size={12} className="inline mr-1" /> Приморский · у моря
+              </div>
+            </div>
+          </a>
+
+          {/* Меню для ПК */}
+          <nav className="hidden lg:flex items-center gap-6 text-[13px] mx-auto">
+            {[
+              ["О проекте", "#about"],
+              ["Локация", "#location"],
+              ["Планировки", "#plans"],
+              ["Галерея", "#gallery"],
+              ["Контакты", "#contact"]
+            ].map(([t, href]) => (
+              <a key={href} href={href} className="hover:text-orange-600 transition-colors" style={{ color: "#4B3B30" }}>{t}</a>
+            ))}
+          </nav>
+
+          {/* Кнопки для ПК */}
+          <div className="ml-auto hidden sm:flex items-center gap-3">
+            <a href="https://t.me/todayididg00d" target="_blank"
+              className="px-4 py-2 rounded-2xl border hover:shadow-md"
+              style={{ borderColor: "#D4A373", color: "#2B2118" }}>Заявка</a>
+            <a href="#cta" className="px-4 py-2 rounded-2xl"
+              style={{ backgroundColor: "#C65D3A", color: "#FFF8F2" }}>Подбор квартиры</a>
+          </div>
+
+          {/* Бургер для мобилки */}
+          <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden ml-auto">
+            {menuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
-        <div className="text-[11px]" style={{color:"#7A6A5F"}}>
-          <MapPin size={12} className="inline mr-1"/> Жилой квартал у моря · Приморский
-        </div>
-      </div>
-    </a>
 
-    {/* БУРГЕР (мобилка) */}
-    <button onClick={()=>setMenuOpen(v=>!v)}
-            className="lg:hidden ml-auto rounded-xl border px-3 py-2"
-            style={{borderColor:"#EAD6C4", color:"#2B2118"}}>
-      {menuOpen ? <X size={18}/> : <Menu size={18}/>}
-    </button>
-
-    {/* МЕНЮ ДЕСКТОП — короткий список */}
-    <nav className="hidden lg:flex items-center gap-6 text-[13px] mx-auto">
-      {[
-        ["О проекте","#about"],
-        ["Локация","#location"],
-        ["Планировки","#plans"],
-        ["Галерея","#gallery"],
-        ["Как купить","#process"],
-      ].map(([t,href])=>(
-        <a key={href} href={href} className="hover:underline"
-           style={{color:"#4B3B30"}}>{t}</a>
-      ))}
-    </nav>
-
-    {/* ПРАВАЯ ЧАСТЬ: кнопки */}
-    <div className="ml-auto hidden sm:flex items-center gap-3">
-      <a href="https://t.me/todayididg00d" target="_blank"
-         className="px-4 py-2 rounded-2xl border hover:shadow-soft"
-         style={{borderColor:"#D4A373", color:"#2B2118"}}>Заявка в Telegram</a>
-      <a href="#cta" className="px-4 py-2 rounded-2xl hover:shadow-soft"
-         style={{backgroundColor:"#C65D3A", color:"#FFF8F2"}}>Подобрать квартиру</a>
+        {/* Мобильное меню */}
+        {menuOpen && (
+          <div className="lg:hidden bg-white shadow-md">
+            {[
+              ["О проекте", "#about"],
+              ["Локация", "#location"],
+              ["Планировки", "#plans"],
+              ["Галерея", "#gallery"],
+              ["Контакты", "#contact"]
+            ].map(([t, href]) => (
+              <a key={href} href={href} className="block px-4 py-2 text-gray-700 hover:bg-orange-50">{t}</a>
+            ))}
+          </div>
+        )}
+      </header>
     </div>
-  </div>
+  );
+}
 
-  {/* МЕНЮ МОБИЛЬНОЕ */}
-  <div className={`lg:hidden overflow-hidden border-t transition-[max-height] duration-300`}
-       style={{maxHeight: menuOpen ? 360 : 0, borderColor:"#EAD6C4"}}>
-    <div className="px-5 py-3 grid grid-cols-2 gap-3 text-sm">
-      {[
-        ["О проекте","#about"],
-        ["Локация","#location"],
-        ["Планировки","#plans"],
-        ["Галерея","#gallery"],
-        ["Как купить","#process"],
-        ["Оставить заявку","#cta"],
-      ].map(([t,href])=>(
-        <a key={href} href={href}
-           className="px-3 py-2 rounded-xl border text-center"
-           style={{borderColor:"#EAD6C4", color:"#2B2118", background:"#FFFFFF"}}>{t}</a>
-      ))}
-    </div>
-  </div>
-</header>
 
 
      {/* HERO */}
