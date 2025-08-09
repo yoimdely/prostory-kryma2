@@ -125,7 +125,6 @@ export default function App() {
         </div>
       </header>
 
-      {/* HERO */}
      {/* HERO */}
 <section className="relative overflow-hidden">
   <div className="absolute inset-0" style={{background:"linear-gradient(180deg, #F6E6D9 0%, #FFF8F2 70%)"}} />
@@ -184,11 +183,19 @@ export default function App() {
 
       {/* KPI */}
       <section className="py-10">
-        <div className="max-w-6xl mx-auto px-4 grid sm:grid-cols-2 md:grid-cols-4 gap-5">
-          <Stat value="≈ 1,4 км" label="До пляжа" icon={<Waves size={18}/>} />
-          <Stat value="6–10" label="Этажность, домов" sub="Монолит-кирпич" icon={<Building2 size={18}/>} />
-          <Stat value="3,02 м" label="Высота потолков" icon={<Ruler size={18}/>} />
-          <Stat value="> 2 000" label="Паркомест" sub="Гостевые и многоуровневые" icon={<ParkingSquare size={18}/>} />
+          <div className="max-w-6xl mx-auto px-4 grid sm:grid-cols-2 md:grid-cols-4 gap-5 items-stretch">
+          <div className="h-full">
+  <Stat value="≈ 1,4 км" label="До пляжа" icon={<Waves size={18} />} />
+</div>
+<div className="h-full">
+  <Stat value="6–10" label="Этажность, домов" sub="Монолит-кирпич" icon={<Building2 size={18} />} />
+</div>
+<div className="h-full">
+  <Stat value="3,02 м" label="Высота потолков" icon={<Ruler size={18} />} />
+</div>
+<div className="h-full">
+  <Stat value="> 2 000" label="Паркомест" sub="Гостевые и многоуровневые" icon={<ParkingSquare size={18} />} />
+</div>
         </div>
       </section>
 
