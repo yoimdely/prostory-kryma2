@@ -93,7 +93,7 @@ export default function App() {
 
       {/* NAV */}
       <header className="sticky top-0 z-30 backdrop-blur border-b" style={{backgroundColor:'rgba(255,248,242,0.8)', borderColor:'#EAD6C4'}}>
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-5 md:px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-2xl grid place-items-center font-semibold" style={{backgroundColor:'#2B2118', color:'#F6E6D9'}}>ПК</div>
             <div>
@@ -103,7 +103,7 @@ export default function App() {
               <div className="text-xs" style={{color:'#7A6A5F'}}><MapPin size={12} className="inline mr-1"/> Жилой квартал у моря · Приморский, Феодосия</div>
             </div>
           </div>
-          <nav className="hidden md:flex items-center gap-6 text-sm">
+          <nav className="hidden md:flex items-center gap-5 text-[13px] overflow-x-auto whitespace-nowrap max-w-[55vw]">
             {[
               ["О проекте","#about"],
               ["Галерея","#gallery"],
