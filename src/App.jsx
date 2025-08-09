@@ -126,42 +126,61 @@ export default function App() {
       </header>
 
       {/* HERO */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0" style={{background:"linear-gradient(180deg, #F6E6D9 0%, #FFF8F2 70%)"}} />
-        <div className="relative max-w-6xl mx-auto px-4 py-16 md:py-24 grid md:grid-cols-2 gap-10">
-          <motion.div initial={{opacity:0, y:20}} animate={{opacity:1, y:0}} transition={{duration:0.5}}>
-            <h1 className="text-[40px] md:text-[56px] leading-[1.1] font-extrabold" style={{fontFamily:'Playfair Display, Manrope, serif', color:'#2B2118'}}>
-              Новый город у моря — «Просторы Крыма»
-            </h1>
-            <p className="mt-5 text-base md:text-lg" style={{color:'#4B3B30', maxWidth:640}}>
-              Комфорт-класс, монолит-кирпич, высота потолков ~3,02 м, благоустроенные дворы, детские и спортивные площадки,
-              торговые галереи и виды на Чёрное море. До моря ≈ 1,4 км. Первая сдача — 1 кв. 2026; очереди — до 4 кв. 2029.
-            </p>
-            <ul className="mt-6 grid grid-cols-2 gap-3 text-sm">
-              {[
-                "1,4 км до пляжа",
-                "6–10 этажей",
-                "Предчистовая / с ремонтом",
-                "Паркинг: многоуровневый и гостевой"
-              ].map((t,i)=> (
-                <li key={i} className="p-3 rounded-xl shadow flex items-center gap-2 border bg-white"
-                    style={{borderColor:'#EAD6C4', color:'#2B2118'}}>
-                  {i===0 && <Waves size={18}/>} {i===1 && <Building2 size={18}/>} {i===2 && <Bath size={18}/>} {i===3 && <ParkingSquare size={18}/>} {t}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a href="#cta" className="px-5 py-3 rounded-2xl" style={{backgroundColor:'#C65D3A', color:'#FFF8F2'}}>Получить подборку</a>
-              <a href="https://t.me/todayididg00d" target="_blank" className="px-5 py-3 rounded-2xl border" style={{borderColor:'#D4A373', color:'#2B2118'}}>Задать вопрос в TG</a>
-            </div>
-          </motion.div>
-          <motion.div className="rounded-3xl overflow-hidden shadow-lg border" style={{height:520, borderColor:'#EAD6C4'}}
-            initial={{opacity:0, scale:0.98}} animate={{opacity:1, scale:1}} transition={{duration:0.6}}>
-            <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=1600&auto=format&fit=crop"
-                 alt="Визуализация квартала у моря" className="w-full h-full object-cover" loading="lazy" />
-          </motion.div>
-        </div>
-      </section>
+     {/* HERO */}
+<section className="relative overflow-hidden">
+  <div className="absolute inset-0" style={{background:"linear-gradient(180deg, #F6E6D9 0%, #FFF8F2 70%)"}} />
+  <div className="relative max-w-6xl mx-auto px-4 py-16 md:py-24 grid md:grid-cols-2 gap-10">
+    <motion.div initial={{opacity:0, y:20}} animate={{opacity:1, y:0}} transition={{duration:0.5}}>
+      <h1 className="text-[40px] md:text-[56px] leading-[1.1] font-extrabold"
+          style={{fontFamily:'Playfair Display, Manrope, serif', color:'#2B2118'}}>
+        Новый город у моря — «Просторы Крыма»
+      </h1>
+      <p className="mt-5 text-base md:text-lg" style={{color:'#4B3B30', maxWidth:640}}>
+        Комфорт-класс, монолит-кирпич, высота потолков ~3,02 м, благоустроенные дворы, детские и спортивные площадки,
+        торговые галереи и виды на Чёрное море. До моря ≈ 1,4 км. Первая сдача — 1 кв. 2026; очереди — до 4 кв. 2029.
+      </p>
+
+      <ul className="mt-6 grid grid-cols-2 gap-3 text-sm">
+        {[
+          ["1,4 км до пляжа", <Waves size={18} key="w"/>],
+          ["6–10 этажей", <Building2 size={18} key="b"/>],
+          ["Предчистовая / с ремонтом", <Bath size={18} key="ba"/>],
+          ["Паркинг: многоуровневый и гостевой", <ParkingSquare size={18} key="p"/>],
+        ].map(([t,icon], i)=> (
+          <li key={i}
+              className="p-3 rounded-xl shadow flex items-center gap-2 border bg-white"
+              style={{borderColor:'#EAD6C4', color:'#2B2118'}}>
+            {icon} {t}
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-8 flex flex-wrap gap-3">
+        <a href="#cta" className="px-5 py-3 rounded-2xl"
+           style={{backgroundColor:'#C65D3A', color:'#FFF8F2'}}>Получить подборку</a>
+        <a href="https://t.me/todayididg00d" target="_blank" className="px-5 py-3 rounded-2xl border hover:shadow-soft"
+           style={{borderColor:'#D4A373', color:'#2B2118'}}>Задать вопрос в TG</a>
+      </div>
+    </motion.div>
+
+    {/* КАРТИНКА */}
+    <motion.div
+      className="rounded-3xl overflow-hidden shadow-lg border"
+      style={{height:520, borderColor:'#EAD6C4'}}
+      initial={{opacity:0, scale:0.98}}
+      animate={{opacity:1, scale:1}}
+      transition={{duration:0.6}}
+    >
+      <img
+        src="https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=1600&auto=format&fit=crop"
+        alt="Визуализация квартала у моря"
+        className="w-full h-full object-cover"
+        loading="lazy"
+      />
+    </motion.div>
+  </div>
+</section>
+
 
       {/* KPI */}
       <section className="py-10">
