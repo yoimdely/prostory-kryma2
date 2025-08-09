@@ -89,7 +89,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen" style={{backgroundColor:'#FFF8F2', color:'#1F1B16', fontFamily:'Montserrat, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial'}}
+    <div className="min-h-screen" style={{backgroundColor:'#FFF8F2', color:'#1F1B16', fontFamily:'Montserrat, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial'}}>
 
       {/* NAV */}
       <header className="sticky top-0 z-30 backdrop-blur border-b" style={{backgroundColor:'rgba(255,248,242,0.8)', borderColor:'#EAD6C4'}}>
