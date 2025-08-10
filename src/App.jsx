@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Home, MapPin, Menu, X,
   Waves, Building2, Bath, ParkingSquare, Ruler,
@@ -12,23 +12,37 @@ import { motion } from "framer-motion";
 function injectSEO() {
   if (typeof document === "undefined") return;
   document.title = "Просторы Крыма — жилой квартал у моря";
+
   const meta = [
     { name: "description", content: "ЖК Просторы Крыма в пгт Приморский (Феодосия): 1,4 км до моря, монолит-кирпич, 6–10 этажей, предчистовая или с ремонтом, эскроу 214-ФЗ." },
     { property: "og:title", content: "Просторы Крыма — жилой квартал у моря" },
     { property: "og:description", content: "1,4 км до моря, монолит-кирпич, предчистовая или с ремонтом. Планировки, цены, очереди." },
     { property: "og:type", content: "website" },
-    { property: "og:image", content: "https://images.unsplash.com/photo-1529429612776-e5dd24d49b42?q=80&w=1600&auto=format&fit=crop" }
+    { property: "og:image", content: "https://images.unsplash.com/photo-1529429612776-e5dd24d49b42?q=80&w=1600&auto=format&fit=crop" },
+    { property: "og:url", content: typeof location !== "undefined" ? location.href : "https://yoimdely.github.io/prostory-kryma2/" }
   ];
+
   meta.forEach(m => {
-    let el = document.querySelector(`meta[${m.name ? "name" : "property"}="${m.name || m.property}"]`);
+    const key = m.name ? "name" : "property";
+    let el = document.querySelector(`meta[${key}="${m.name || m.property}"]`);
     if (!el) {
       el = document.createElement("meta");
-      m.name ? el.setAttribute("name", m.name) : el.setAttribute("property", m.property);
+      el.setAttribute(key, m.name || m.property);
       document.head.appendChild(el);
     }
     el.setAttribute("content", m.content);
   });
+
+  // canonical
+  let link = document.querySelector('link[rel="canonical"]');
+  if (!link) {
+    link = document.createElement("link");
+    link.rel = "canonical";
+    document.head.appendChild(link);
+  }
+  link.href = typeof location !== "undefined" ? location.href : "https://yoimdely.github.io/prostory-kryma2/";
 }
+
 
 function injectFonts() {
   if (typeof document === "undefined") return;
