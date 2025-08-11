@@ -1,7 +1,3 @@
-[media pointer="file-service://file-23mUEwbd5tHnV1vKHvNhv4"]
-вот все картинки
-держи весь app
-Перепиши его интегрируя все фото и видео 
 import React, { useEffect, useState, useCallback } from "react";
 import {
   Home, MapPin, Menu, X,
@@ -12,54 +8,44 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 
-// === SEO + ШРИФТЫ ===
+/* ===== helpers for media paths (Vite + GitHub Pages safe) ===== */
+const media = (p) => new URL(`/media/${p}`, import.meta.env.BASE_URL).href; // относительный путь (для <img>)
+const mediaAbs = (p) =>
+  new URL(import.meta.env.BASE_URL + `media/${p}`, window.location.origin).href; // абсолютный (для OG)
+
+/* === SEO + ШРИФТЫ === */
 function injectSEO() {
   if (typeof document === "undefined") return;
-  document.title = "Просторы Крыма — жилой квартал у моря";
+  const OG = mediaAbs("51.jpeg"); // главный кадр (hero)
 
+  document.title = "Просторы Крыма — жилой квартал у моря";
   const meta = [
     { name: "description", content: "ЖК Просторы Крыма в пгт Приморский (Феодосия): 1,4 км до моря, монолит-кирпич, 6–10 этажей, предчистовая или с ремонтом, эскроу 214-ФЗ." },
     { property: "og:title", content: "Просторы Крыма — жилой квартал у моря" },
     { property: "og:description", content: "1,4 км до моря, монолит-кирпич, предчистовая или с ремонтом. Планировки, цены, очереди." },
     { property: "og:type", content: "website" },
-    { property: "og:image", content: "https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=1600&auto=format&fit=crop" },
+    { property: "og:image", content: OG },
     { property: "og:url", content: typeof location !== "undefined" ? location.href : "https://yoimdely.github.io/prostory-kryma2/" }
   ];
-
   meta.forEach(m => {
     const key = m.name ? "name" : "property";
     let el = document.querySelector(`meta[${key}="${m.name || m.property}"]`);
-    if (!el) {
-      el = document.createElement("meta");
-      el.setAttribute(key, m.name || m.property);
-      document.head.appendChild(el);
-    }
+    if (!el) { el = document.createElement("meta"); el.setAttribute(key, m.name || m.property); document.head.appendChild(el); }
     el.setAttribute("content", m.content);
   });
 
   // canonical
   let link = document.querySelector('link[rel="canonical"]');
-  if (!link) {
-    link = document.createElement("link");
-    link.rel = "canonical";
-    document.head.appendChild(link);
-  }
+  if (!link) { link = document.createElement("link"); link.rel = "canonical"; document.head.appendChild(link); }
   link.href = typeof location !== "undefined" ? location.href : "https://yoimdely.github.io/prostory-kryma2/";
 
-  // preload hero image (LCP)
+  // preload LCP
   let pl = document.querySelector('link[rel="preload"][as="image"]');
-  if (!pl) {
-    pl = document.createElement("link");
-    pl.rel = "preload";
-    pl.as = "image";
-    pl.href = "https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=1600&auto=format&fit=crop";
-    document.head.appendChild(pl);
-  }
+  if (!pl) { pl = document.createElement("link"); pl.rel = "preload"; pl.as = "image"; pl.href = OG; document.head.appendChild(pl); }
 }
 
 function injectFonts() {
   if (typeof document === "undefined") return;
-  // preconnect + stylesheet (улучшает Web Vitals, без изменения твоей палитры)
   const links = [
     { rel: "preconnect", href: "https://fonts.googleapis.com" },
     { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
@@ -72,7 +58,7 @@ function injectFonts() {
   });
 }
 
-// Вспомогательные UI
+/* === Вспомогательные UI === */
 function Stat({ value, label, sub, icon }) {
   return (
     <div className="p-5 rounded-2xl border h-full"
@@ -83,19 +69,15 @@ function Stat({ value, label, sub, icon }) {
     </div>
   );
 }
-
 function IconWrap({ children }) {
   return (
-    <div
-      className="w-9 h-9 rounded-xl grid place-items-center border"
-      style={{ borderColor: "#EAD6C4", backgroundColor: "#FFF8F2", color: "#2B2118" }}
-    >
+    <div className="w-9 h-9 rounded-xl grid place-items-center border"
+         style={{ borderColor: "#EAD6C4", backgroundColor: "#FFF8F2", color: "#2B2118" }}>
       {children}
     </div>
   );
 }
-
-// Иконка огня (кастомный SVG)
+// Иконка огня
 function FireIcon(props){
   return (
     <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="currentColor" strokeWidth="2"
@@ -105,16 +87,13 @@ function FireIcon(props){
   );
 }
 
-// === APP ===
+/* === APP === */
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
 
-  useEffect(() => {
-    injectFonts();
-    injectSEO();
-  }, []);
+  useEffect(() => { injectFonts(); injectSEO(); }, []);
 
   const onSubmit = useCallback(async (e) => {
     e.preventDefault();
@@ -122,10 +101,7 @@ export default function App() {
       setSending(true);
       const form = e.currentTarget;
       const data = new FormData(form);
-      const res = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: data
-      });
+      const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: data });
       if (!res.ok) throw new Error("Network error");
       setSent(true);
       form.reset();
@@ -140,11 +116,10 @@ export default function App() {
   return (
     <div className="min-h-screen"
          style={{ backgroundColor: "#FFF8F2", color: "#1F1B16", fontFamily: "Montserrat, sans-serif" }}>
-      {/* NAVIGATION */}
+      {/* NAV */}
       <header className="sticky top-0 z-30 border-b backdrop-blur"
               style={{ backgroundColor: "rgba(255,248,242,0.95)", borderColor: "#EAD6C4" }}>
         <div className="max-w-6xl mx-auto px-5 py-3 flex items-center gap-4">
-          {/* Лого и название */}
           <a href="#" className="flex items-center gap-3 shrink-0">
             <div className="w-9 h-9 rounded-2xl grid place-items-center font-semibold"
                  style={{ backgroundColor: "#2B2118", color: "#F6E6D9" }}>ПК</div>
@@ -159,7 +134,6 @@ export default function App() {
             </div>
           </a>
 
-          {/* Меню для ПК */}
           <nav className="hidden lg:flex items-center gap-6 text-[13px] mx-auto" aria-label="Главное меню">
             {[
               ["О проекте", "#about"],
@@ -173,7 +147,6 @@ export default function App() {
             ))}
           </nav>
 
-          {/* Кнопки для ПК */}
           <div className="ml-auto hidden sm:flex items-center gap-3">
             <a href="https://t.me/todayididg00d" target="_blank" rel="noopener noreferrer"
                className="px-4 py-2 rounded-2xl border hover:shadow-md"
@@ -182,13 +155,11 @@ export default function App() {
                style={{ backgroundColor: "#C65D3A", color: "#FFF8F2" }}>Подбор квартиры</a>
           </div>
 
-          {/* Бургер для мобилки */}
           <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden ml-auto" aria-label="Меню">
             {menuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
 
-        {/* Мобильное меню */}
         {menuOpen && (
           <div className="lg:hidden bg-white shadow-md">
             {[
@@ -226,8 +197,7 @@ export default function App() {
                 ["Предчистовая / с ремонтом", <Bath size={18} key="ba"/>],
                 ["Паркинг: многоуровневый и гостевой", <ParkingSquare size={18} key="p"/>],
               ].map(([t,icon], i)=> (
-                <li key={i}
-                    className="p-3 rounded-xl shadow flex items-center gap-2 border bg-white"
+                <li key={i} className="p-3 rounded-xl shadow flex items-center gap-2 border bg-white"
                     style={{borderColor:'#EAD6C4', color:'#2B2118'}}>
                   {icon} {t}
                 </li>
@@ -243,22 +213,14 @@ export default function App() {
             </div>
           </motion.div>
 
-          {/* КАРТИНКА */}
-          <motion.div
-            className="rounded-3xl overflow-hidden shadow-lg border"
+          <motion.div className="rounded-3xl overflow-hidden shadow-lg border"
             style={{height:520, borderColor:'#EAD6C4'}}
-            initial={{opacity:0, scale:0.98}}
-            animate={{opacity:1, scale:1}}
-            transition={{duration:0.6}}
-          >
+            initial={{opacity:0, scale:0.98}} animate={{opacity:1, scale:1}} transition={{duration:0.6}}>
             <img
-              src="https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=1600&auto=format&fit=crop"
+              src={media("51.jpeg")}
               alt="Визуализация квартала у моря"
               className="w-full h-full object-cover"
-              loading="eager"
-              fetchpriority="high"
-              width={1600}
-              height={1040}
+              loading="eager" fetchpriority="high" width={1600} height={1040}
             />
           </motion.div>
         </div>
@@ -267,18 +229,10 @@ export default function App() {
       {/* KPI */}
       <section className="py-10">
         <div className="max-w-6xl mx-auto px-4 grid sm:grid-cols-2 md:grid-cols-4 gap-5 items-stretch">
-          <div className="h-full">
-            <Stat value="≈ 1,4 км" label="До пляжа" icon={<Waves size={18} />} />
-          </div>
-          <div className="h-full">
-            <Stat value="6–10" label="Этажность, домов" sub="Монолит-кирпич" icon={<Building2 size={18} />} />
-          </div>
-          <div className="h-full">
-            <Stat value="3,02 м" label="Высота потолков" icon={<Ruler size={18} />} />
-          </div>
-          <div className="h-full">
-            <Stat value="> 2 000" label="Паркомест" sub="Гостевые и многоуровневые" icon={<ParkingSquare size={18} />} />
-          </div>
+          <div className="h-full"><Stat value="≈ 1,4 км" label="До пляжа" icon={<Waves size={18} />} /></div>
+          <div className="h-full"><Stat value="6–10" label="Этажность, домов" sub="Монолит-кирпич" icon={<Building2 size={18} />} /></div>
+          <div className="h-full"><Stat value="3,02 м" label="Высота потолков" icon={<Ruler size={18} />} /></div>
+          <div className="h-full"><Stat value="> 2 000" label="Паркомест" sub="Гостевые и многоуровневые" icon={<ParkingSquare size={18} />} /></div>
         </div>
       </section>
 
@@ -332,11 +286,7 @@ export default function App() {
           <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2"
               style={{fontFamily:'Prata, serif'}}><Building2 size={22}/> Галерея</h2>
           <div className="mt-6 grid md:grid-cols-3 gap-4">
-            {[
-              "https://images.unsplash.com/photo-1487956382158-bb926046304a?q=80&w=1600&auto=format&fit=crop",
-              "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1600&auto=format&fit=crop",
-              "https://images.unsplash.com/photo-1536376072261-38c75010e6c9?q=80&w=1600&auto=format&fit=crop",
-            ].map((src, i) => (
+            {[ media("11.jpeg"), media("12.jpeg"), media("22.jpeg") ].map((src, i) => (
               <div key={i} className="aspect-[4/3] rounded-2xl overflow-hidden shadow border group"
                    style={{borderColor:'#EAD6C4'}}>
                 <img src={src} alt="Визуализации фасадов/интерьеров"
@@ -389,9 +339,7 @@ export default function App() {
                    style={{backgroundColor:'#FFFFFF', borderColor:'#EAD6C4'}}>
                 <div className="font-semibold" style={{color:'#2B2118'}}>{b.t}</div>
                 <ul className="mt-3 space-y-2 text-sm" style={{color:'#4B3B30'}}>
-                  {b.points.map(([Ic,txt], j)=>(
-                    <li key={j} className="flex gap-3 items-start"><Ic size={16}/> {txt}</li>
-                  ))}
+                  {b.points.map(([Ic,txt], j)=>(<li key={j} className="flex gap-3 items-start"><Ic size={16}/> {txt}</li>))}
                 </ul>
               </div>
             ))}
@@ -437,10 +385,10 @@ export default function App() {
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2"
               style={{fontFamily:'Prata, serif'}}><Ruler size={22}/> Планировки и метражи</h2>
-          <p className="mt-3" style={{color:'#4B3B30'}}>
-            Студии от ~29 м², 1-комнатные ~35–45 м², 2-комнатные от ~50 м², 3-комнатные — до ~84 м².
-            Варианты: предчистовая и с ремонтом (по корпусам и очередям).
-          </p>
+        <p className="mt-3" style={{color:'#4B3B30'}}>
+          Студии от ~29 м², 1-комнатные ~35–45 м², 2-комнатные от ~50 м², 3-комнатные — до ~84 м².
+          Варианты: предчистовая и с ремонтом (по корпусам и очередям).
+        </p>
           <div className="mt-6 grid md:grid-cols-3 gap-4">
             {[
               { t: "Студии", d: "~29–30 м², эргономика для аренды и отдыха", icon:<Home size={18}/> },
@@ -496,7 +444,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* PROCESS */}
+      {/* PROCESS + VIDEO */}
       <section id="process" className="py-14 md:py-20">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2"
@@ -520,8 +468,7 @@ export default function App() {
           </div>
 
           <div className="mt-10 grid md:grid-cols-2 gap-6">
-            <div className="p-6 rounded-2xl border"
-                 style={{backgroundColor:'#FFF8F2', borderColor:'#EAD6C4'}}>
+            <div className="p-6 rounded-2xl border" style={{backgroundColor:'#FFF8F2', borderColor:'#EAD6C4'}}>
               <div className="font-semibold flex items-center gap-2" style={{color:'#2B2118'}}>
                 <Banknote size={18}/> Банки-партнёры
               </div>
@@ -533,14 +480,12 @@ export default function App() {
               </div>
               <p className="text-xs mt-3" style={{color:'#7A6A5F'}}>Перечень банков может расширяться.</p>
             </div>
-            <div className="p-6 rounded-2xl border shadow"
-                 style={{backgroundColor:'#FFFFFF', borderColor:'#EAD6C4'}}>
+            <div className="p-6 rounded-2xl border shadow" style={{backgroundColor:'#FFFFFF', borderColor:'#EAD6C4'}}>
               <div className="font-semibold flex items-center gap-2" style={{color:'#2B2118'}}>
                 <Home size={18}/> Видео-тур по кварталу
               </div>
-              <div className="mt-3 aspect-video rounded-xl overflow-hidden border"
-                   style={{borderColor:'#EAD6C4'}}>
-                <iframe title="video" src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              <div className="mt-3 aspect-video rounded-xl overflow-hidden border" style={{borderColor:'#EAD6C4'}}>
+                <iframe title="video" src="https://www.youtube.com/embed/hLcCQA-CH8U"
                         className="w-full h-full" loading="lazy"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen />
@@ -550,7 +495,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* FAQ */}
+      {/* FAQ (+ LD-JSON внутри секции) */}
       <section id="faq" className="py-14 md:py-20">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold" style={{fontFamily:'Prata, serif'}}>Вопросы и ответы</h2>
@@ -570,7 +515,6 @@ export default function App() {
             ))}
           </div>
         </div>
-        {/* FAQPage Schema */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -645,7 +589,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* FOOTER */}
+      {/* FOOTER + Org JSON-LD */}
       <footer className="py-12 border-t" style={{borderColor:'#EAD6C4'}}>
         <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-3 gap-6 text-sm" style={{color:'#4B3B30'}}>
           <div className="md:col-span-2">
@@ -663,7 +607,6 @@ export default function App() {
         </div>
       </footer>
 
-      {/* JSON-LD Organization */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
