@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   Home, MapPin, Menu, X,
   Waves, Building2, Bath, ParkingSquare, Ruler,
@@ -18,7 +18,7 @@ function injectSEO() {
     { property: "og:title", content: "Просторы Крыма — жилой квартал у моря" },
     { property: "og:description", content: "1,4 км до моря, монолит-кирпич, предчистовая или с ремонтом. Планировки, цены, очереди." },
     { property: "og:type", content: "website" },
-    { property: "og:image", content: "https://images.unsplash.com/photo-1529429612776-e5dd24d49b42?q=80&w=1600&auto=format&fit=crop" },
+    { property: "og:image", content: "https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=1600&auto=format&fit=crop" },
     { property: "og:url", content: typeof location !== "undefined" ? location.href : "https://yoimdely.github.io/prostory-kryma2/" }
   ];
 
@@ -41,15 +41,31 @@ function injectSEO() {
     document.head.appendChild(link);
   }
   link.href = typeof location !== "undefined" ? location.href : "https://yoimdely.github.io/prostory-kryma2/";
-}
 
+  // preload hero image (LCP)
+  let pl = document.querySelector('link[rel="preload"][as="image"]');
+  if (!pl) {
+    pl = document.createElement("link");
+    pl.rel = "preload";
+    pl.as = "image";
+    pl.href = "https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=1600&auto=format&fit=crop";
+    document.head.appendChild(pl);
+  }
+}
 
 function injectFonts() {
   if (typeof document === "undefined") return;
-  const link = document.createElement("link");
-  link.rel = "stylesheet";
-  link.href = "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Prata&display=swap";
-  document.head.appendChild(link);
+  // preconnect + stylesheet (улучшает Web Vitals, без изменения твоей палитры)
+  const links = [
+    { rel: "preconnect", href: "https://fonts.googleapis.com" },
+    { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
+    { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Prata&display=swap" }
+  ];
+  links.forEach(cfg => {
+    const l = document.createElement("link");
+    Object.entries(cfg).forEach(([k, v]) => v !== undefined && l.setAttribute(k, v));
+    document.head.appendChild(l);
+  });
 }
 
 // Вспомогательные UI
@@ -102,7 +118,6 @@ export default function App() {
       setSending(true);
       const form = e.currentTarget;
       const data = new FormData(form);
-      // Пример отправки на Web3Forms; при необходимости замени эндпоинт/ключ
       const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         body: data
@@ -141,7 +156,7 @@ export default function App() {
           </a>
 
           {/* Меню для ПК */}
-          <nav className="hidden lg:flex items-center gap-6 text-[13px] mx-auto">
+          <nav className="hidden lg:flex items-center gap-6 text-[13px] mx-auto" aria-label="Главное меню">
             {[
               ["О проекте", "#about"],
               ["Локация", "#location"],
@@ -236,7 +251,10 @@ export default function App() {
               src="https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=1600&auto=format&fit=crop"
               alt="Визуализация квартала у моря"
               className="w-full h-full object-cover"
-              loading="lazy"
+              loading="eager"
+              fetchpriority="high"
+              width={1600}
+              height={1040}
             />
           </motion.div>
         </div>
@@ -319,7 +337,7 @@ export default function App() {
                    style={{borderColor:'#EAD6C4'}}>
                 <img src={src} alt="Визуализации фасадов/интерьеров"
                      className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform"
-                     loading="lazy" />
+                     loading="lazy" width={1600} height={1200} />
               </div>
             ))}
           </div>
@@ -528,6 +546,46 @@ export default function App() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section id="faq" className="py-14 md:py-20">
+        <div className="max-w-6xl mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-bold" style={{fontFamily:'Prata, serif'}}>Вопросы и ответы</h2>
+          <div className="mt-6 grid md:grid-cols-2 gap-4">
+            {[
+              {q:"Где расположен квартал?", a:"В пгт Приморский городского округа Феодосия. До моря примерно 1,4 км."},
+              {q:"Какая конструкция домов?", a:"Монолит-кирпич, панорамное остекление, улучшенная тепло- и шумоизоляция."},
+              {q:"Какие варианты отделки?", a:"Предчистовая либо с готовым ремонтом — зависит от корпуса и очереди."},
+              {q:"Какой формат парковки?", a:"Гостевые места и многоуровневый паркинг на территории."},
+              {q:"Сроки ввода очередей?", a:"Первая сдача — 1 кв. 2026; завершение — до 4 кв. 2029."},
+              {q:"Как проходит покупка?", a:"Бронирование, ДДУ на эскроу-счёт. Помогаем с ипотекой в банках-партнёрах."}
+            ].map((i,idx)=>(
+              <details key={idx} className="p-5 rounded-2xl border bg-white" style={{borderColor:'#EAD6C4'}}>
+                <summary className="font-semibold cursor-pointer" style={{color:'#2B2118'}}>{i.q}</summary>
+                <p className="mt-2 text-sm" style={{color:'#4B3B30'}}>{i.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+        {/* FAQPage Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": [
+                { "@type":"Question", "name":"Где расположен квартал?", "acceptedAnswer":{"@type":"Answer","text":"В пгт Приморский, до моря ~1,4 км."}},
+                { "@type":"Question", "name":"Какая конструкция домов?", "acceptedAnswer":{"@type":"Answer","text":"Монолит-кирпич, панорамное остекление."}},
+                { "@type":"Question", "name":"Какие варианты отделки?", "acceptedAnswer":{"@type":"Answer","text":"Предчистовая либо с готовым ремонтом."}},
+                { "@type":"Question", "name":"Какой формат парковки?", "acceptedAnswer":{"@type":"Answer","text":"Гостевые и многоуровневый паркинг."}},
+                { "@type":"Question", "name":"Сроки ввода очередей?", "acceptedAnswer":{"@type":"Answer","text":"Первая сдача — 1 кв. 2026; завершение — до 4 кв. 2029."}},
+                { "@type":"Question", "name":"Как проходит покупка?", "acceptedAnswer":{"@type":"Answer","text":"Бронирование, ДДУ на эскроу-счёт, ипотека."}}
+              ]
+            })
+          }}
+        />
+      </section>
+
       {/* BUY CTA + FORM */}
       <section id="buy" className="py-20">
         <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-10 items-start">
@@ -601,7 +659,7 @@ export default function App() {
         </div>
       </footer>
 
-      {/* JSON-LD */}
+      {/* JSON-LD Organization */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
