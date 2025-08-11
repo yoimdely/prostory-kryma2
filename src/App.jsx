@@ -1,3 +1,7 @@
+[media pointer="file-service://file-23mUEwbd5tHnV1vKHvNhv4"]
+вот все картинки
+держи весь app
+Перепиши его интегрируя все фото и видео 
 import React, { useEffect, useState, useCallback } from "react";
 import {
   Home, MapPin, Menu, X,
